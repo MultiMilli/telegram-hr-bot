@@ -78,3 +78,4 @@ GitHub.sublime-settings
 requirements_pip freeze.txt
 requirements_pipreqs.txt
 # test.py
+applicants
