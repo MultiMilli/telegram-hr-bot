@@ -77,5 +77,5 @@ GitHub.sublime-settings
 # Custom
 requirements_pip freeze.txt
 requirements_pipreqs.txt
-# test.py
+test.py
 applicants
