@@ -19,7 +19,7 @@ from peewee import SqliteDatabase, Model, CharField, DateTimeField, PostgresqlDa
 
 # # db = SqliteDatabase('applicants') #Test bot on SQLite
 # db = PostgresqlDatabase('applicant', host='localhost', port=5432, user=USERNAME, password=PASSWORD)
-db = PostgresqlDatabase('d5sna531o243jj', host='ec2-52-48-159-67.eu-west-1.compute.amazonaws.com', user='icazpuovmxnozv', password='f03cb7e3020bf87efaa7d5c54387cd266cd9e37a6bfc67dd3a335d5cc8c28f9e', port=5432)
+db = PostgresqlDatabase('dmfe7joaqij2r', host='ec2-99-80-170-190.eu-west-1.compute.amazonaws.com', user='xsoisbziozhtuu', password='4db2c19a091e426ad2091e7ee07457662dcc0235f683a8a46e22e7bb36bd7eb7', port=5432)
 
 class User(Model):
     chat_id = CharField()
