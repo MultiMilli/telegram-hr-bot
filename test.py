@@ -9,7 +9,7 @@ from flask import Flask, request
 from config import API_TOKEN, APP_URL
 
 bot = TeleBot(API_TOKEN)
-URL = APP_URL + API_TOKEN
+URL = f'{APP_URL}{API_TOKEN}'
 server = Flask(__name__)
 logger = logger
 logger.setLevel(DEBUG)
