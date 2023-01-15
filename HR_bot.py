@@ -8,11 +8,8 @@ from flask import Flask, request
 from models import User
 from config import API_TOKEN, APP_URL
 
-# import logging
-# logger = telebot.logger
-# telebot.logger.setLevel(logging.DEBUG)
 
-bot = TeleBot(API_TOKEN) #API_TOKEN get from the enviroment variables
+bot = TeleBot(API_TOKEN)
 URL = APP_URL + API_TOKEN
 server = Flask(__name__)
 logger = logger
@@ -149,4 +146,3 @@ def webhook():
 
 if __name__ == '__main__':
     server.run(host='0.0.0.0', port=int(getenv('PORT', 5000)))
-    # bot.infinity_polling()
