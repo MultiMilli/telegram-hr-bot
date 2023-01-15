@@ -18,7 +18,7 @@ logger.setLevel(DEBUG)
 def send_welcome(message):
     bot.send_message(message.chat.id, f'Hello i\'am working')
 
-@server.route(f'/{API_TOKEN}', methods=['POST'])
+@server.route('/' + API_TOKEN, methods=['POST'])
 def redirect_message():
     json_string = request.get_data().decode('utf-8')
     update = types.Update.de_json(json_string)
