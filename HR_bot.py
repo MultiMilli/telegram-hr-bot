@@ -8,14 +8,17 @@ from flask import Flask, request
 from models import User
 # from config import API_TOKEN, APP_URL
 
-
+TOKEN = '5719924088:AAHqL_qZq-ePYkEjRlKzaSmf9YB46gTrQ-0'
+bot = TeleBot(TOKEN)
+URL = f'https://test-tg.herokuapp.com/5719924088:AAHqL_qZq-ePYkEjRlKzaSmf9YB46gTrQ-0'
+server = Flask(__name__)
 # bot = TeleBot(API_TOKEN)
 # URL = APP_URL + API_TOKEN
-bot = TeleBot('5719924088:AAHqL_qZq-ePYkEjRlKzaSmf9YB46gTrQ-0')
-URL = 'https://test-tg.herokuapp.com/5719924088:AAHqL_qZq-ePYkEjRlKzaSmf9YB46gTrQ-0'
-server = Flask(__name__)
-logger = logger
-logger.setLevel(DEBUG) 
+# bot = TeleBot('5719924088:AAHqL_qZq-ePYkEjRlKzaSmf9YB46gTrQ-0')
+# URL = 'https://test-tg.herokuapp.com/5719924088:AAHqL_qZq-ePYkEjRlKzaSmf9YB46gTrQ-0'
+# server = Flask(__name__)
+# logger = logger
+# logger.setLevel(DEBUG) 
 
 Q_INDEX = 0
 ANSWERS_LIST = []
