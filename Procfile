@@ -1,1 +1,1 @@
-web: python3 HR_bot.py
+web: python3 test.py

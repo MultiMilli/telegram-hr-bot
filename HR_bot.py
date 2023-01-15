@@ -15,7 +15,7 @@ bot = TeleBot('5719924088:AAHqL_qZq-ePYkEjRlKzaSmf9YB46gTrQ-0')
 URL = 'https://test-tg.herokuapp.com/5719924088:AAHqL_qZq-ePYkEjRlKzaSmf9YB46gTrQ-0'
 server = Flask(__name__)
 logger = logger
-logger.setLevel(DEBUG)
+logger.setLevel(DEBUG) 
 
 Q_INDEX = 0
 ANSWERS_LIST = []
