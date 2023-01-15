@@ -10,7 +10,7 @@ from models import User
 
 TOKEN = '5719924088:AAHqL_qZq-ePYkEjRlKzaSmf9YB46gTrQ-0'
 bot = TeleBot(TOKEN)
-URL = f'https://test-tg.herokuapp.com/5719924088:AAHqL_qZq-ePYkEjRlKzaSmf9YB46gTrQ-0'
+URL = f'https://tl-test-tg.herokuapp.com/5719924088:AAHqL_qZq-ePYkEjRlKzaSmf9YB46gTrQ-0'
 server = Flask(__name__)
 # logger = logger
 # logger.setLevel(DEBUG)
