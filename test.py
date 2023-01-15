@@ -6,10 +6,10 @@ from telebot import TeleBot, types, logger
 from flask import Flask, request
 
 # from models import User
-from config import API_TOKEN, APP_URL
+# from config import API_TOKEN, APP_URL
 
-bot = TeleBot(API_TOKEN)
-URL = f'{APP_URL}{API_TOKEN}'
+bot = TeleBot('5719924088:AAHqL_qZq-ePYkEjRlKzaSmf9YB46gTrQ-0')
+URL = 'https://telegram-hr-bot-tl.herokuapp.com/5719924088:AAHqL_qZq-ePYkEjRlKzaSmf9YB46gTrQ-0'
 server = Flask(__name__)
 logger = logger
 logger.setLevel(DEBUG)
@@ -18,7 +18,7 @@ logger.setLevel(DEBUG)
 def send_welcome(message):
     bot.send_message(message.chat.id, f'Hello i\'am working')
 
-@server.route('/' + API_TOKEN, methods=['POST'])
+@server.route('/5719924088:AAHqL_qZq-ePYkEjRlKzaSmf9YB46gTrQ-0', methods=['POST'])
 def redirect_message():
     json_string = request.get_data().decode('utf-8')
     update = types.Update.de_json(json_string)
