@@ -133,20 +133,20 @@ def answer_handler(message):
                 parse_mode='HTML'
             )
 
-@server.route('/5719924088:AAHqL_qZq-ePYkEjRlKzaSmf9YB46gTrQ-0', methods=['POST'])
-def redirect_message():
-    json_string = request.get_data().decode('utf-8')
-    update = types.Update.de_json(json_string)
-    bot.process_new_updates([update])
-    return '!', 200
+# @server.route('/5719924088:AAHqL_qZq-ePYkEjRlKzaSmf9YB46gTrQ-0', methods=['POST'])
+# def redirect_message():
+#     json_string = request.get_data().decode('utf-8')
+#     update = types.Update.de_json(json_string)
+#     bot.process_new_updates([update])
+#     return '!', 200
 
-@server.route('/')
-def webhook():
-    bot.remove_webhook()
-    bot.set_webhook(url=URL)
-    return '!', 200
+# @server.route('/')
+# def webhook():
+#     bot.remove_webhook()
+#     bot.set_webhook(url=URL)
+#     return '!', 200
 
 
 if __name__ == '__main__':
-    server.run(host='0.0.0.0', port=int(getenv('PORT', 5000)))
-    # bot.infinity_polling()
+    # server.run(host='0.0.0.0', port=int(getenv('PORT', 5000)))
+    bot.infinity_polling()
