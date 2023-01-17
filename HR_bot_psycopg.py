@@ -10,7 +10,7 @@ from psycopg2 import *
 # from config import API_TOKEN, APP_URL
 
 TOKEN = '5719924088:AAEnS5XdU9DoKXxtbKxwzURAmaOMK7dsLg4'
-URL = f'https://web-production-426d.up.railway.app/5719924088:AAEnS5XdU9DoKXxtbKxwzURAmaOMK7dsLg4'
+URL = f'https://web-production-4547.up.railway.app/5719924088:AAEnS5XdU9DoKXxtbKxwzURAmaOMK7dsLg4'
 bot = TeleBot(TOKEN)
 server = Flask(__name__)
 # bot = TeleBot(API_TOKEN)
