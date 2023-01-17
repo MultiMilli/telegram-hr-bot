@@ -10,7 +10,7 @@ from psycopg2 import *
 # from config import API_TOKEN, APP_URL
 
 TOKEN = '5347978233:AAHvtXwjvqX4vp2C4crq-sbjqnjDOzrnM48'
-URL = f'https://web-production-426d.up.railway.app/5719924088:AAHqL_qZq-ePYkEjRlKzaSmf9YB46gTrQ-0'
+URL = f'https://web-production-426d.up.railway.app/5347978233:AAHvtXwjvqX4vp2C4crq-sbjqnjDOzrnM48'
 bot = TeleBot(TOKEN)
 server = Flask(__name__)
 # bot = TeleBot(API_TOKEN)
@@ -160,7 +160,7 @@ def answer_handler(message):
                 parse_mode='HTML'
             )
 
-@server.route('/5719924088:AAHqL_qZq-ePYkEjRlKzaSmf9YB46gTrQ-0', methods=['POST'])
+@server.route('/5347978233:AAHvtXwjvqX4vp2C4crq-sbjqnjDOzrnM48', methods=['POST'])
 def redirect_message():
     json_string = request.get_data().decode('utf-8')
     update = types.Update.de_json(json_string)
