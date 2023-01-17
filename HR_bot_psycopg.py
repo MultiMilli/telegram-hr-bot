@@ -9,8 +9,8 @@ from psycopg2 import *
 # from models import User
 # from config import API_TOKEN, APP_URL
 
-TOKEN = '5347978233:AAHvtXwjvqX4vp2C4crq-sbjqnjDOzrnM48'
-URL = f'https://web-production-426d.up.railway.app/5347978233:AAHvtXwjvqX4vp2C4crq-sbjqnjDOzrnM48'
+TOKEN = '5719924088:AAEnS5XdU9DoKXxtbKxwzURAmaOMK7dsLg4'
+URL = f'https://web-production-426d.up.railway.app/5719924088:AAEnS5XdU9DoKXxtbKxwzURAmaOMK7dsLg4'
 bot = TeleBot(TOKEN)
 server = Flask(__name__)
 # bot = TeleBot(API_TOKEN)
@@ -18,7 +18,8 @@ server = Flask(__name__)
 # server = Flask(__name__)
 # logger = logger
 # logger.setLevel(DEBUG) 
-conn = connect(database="railway", host="containers-us-west-112.railway.app", port='7853', user='postgres', password='7im3uQsWdPjwW9iucKzW')
+# conn = connect(database="railway", host="containers-us-west-112.railway.app", port='7853', user='postgres', password='7im3uQsWdPjwW9iucKzW')
+conn = connect('postgresql://postgres:x54mwNEdaHOh2OHaPSdW@containers-us-west-132.railway.app:5802/railway', sslmode="require")
 curs = conn.cursor()
 conn.autocommit = True
 
@@ -40,12 +41,12 @@ def send_welcome(message):
     keyboard = types.InlineKeyboardMarkup()
     keyboard.add(button)
     #11111
-    curs.execute(f"SELECT chat_id FROM user WHERE chat_id = {message.chat.id};")
+    curs.execute(f"SELECT chat_id FROM public.user WHERE chat_id = {message.chat.id};")
     user = curs.fetchone()
     #22222
     if not user:
         #3333
-        curs.execute("INSERT INTO user (chat_id, username, first_name) VALUES (%s, %s, %s);", (message.chat.id, message.from_user.username, message.from_user.first_name))
+        curs.execute("INSERT INTO public.user (chat_id, username, first_name) VALUES (%s, %s, %s);", (message.chat.id, message.from_user.username, message.from_user.first_name))
         # conn.commit()
         # User.create(chat_id=message.chat.id, username=message.from_user.username, first_name=message.from_user.first_name)
         bot.send_message(
@@ -57,7 +58,7 @@ def send_welcome(message):
             parse_mode='HTML')
     else:
         #44444
-        curs.execute(f"SELECT apply_time FROM user WHERE chat_id = {message.chat.id};")
+        curs.execute(f"SELECT apply_time FROM public.user WHERE chat_id = {message.chat.id};")
         atime = curs.fetchone()
         # print(atime)
         # user = User.get(User.chat_id == message.chat.id)
@@ -99,7 +100,7 @@ def answer_handler(message):
     global APPLICATION_DATETIME
 
     #55555
-    curs.execute(f"SELECT * FROM user WHERE chat_id = {message.chat.id};")
+    curs.execute(f"SELECT * FROM public.user WHERE chat_id = {message.chat.id};")
     user = curs.fetchone()
     # user = User.get(User.chat_id == message.chat.id)
 
@@ -125,7 +126,7 @@ def answer_handler(message):
                 )
                 APPLICATION_DATETIME = datetime.now()
                 # 6666
-                curs.execute("UPDATE user SET apply_time = %(apply_time)s WHERE chat_id = %(chat_id)s;", {"chat_id": message.chat.id, "apply_time": APPLICATION_DATETIME})
+                curs.execute("UPDATE public.user SET apply_time = %(apply_time)s WHERE chat_id = %(chat_id)s;", {"chat_id": message.chat.id, "apply_time": APPLICATION_DATETIME})
                 # user.apply_time = APPLICATION_DATETIME
                 # user.save()
                 msg = []
@@ -134,7 +135,7 @@ def answer_handler(message):
                 # msg.append(f'<b>First Name:</b> {user.first_name}\n')
                 # msg.append(f'<b>Application time:</b> {user.apply_time.strftime("%d.%m.%Y %H:%M:%S")}\n')
                 #7777
-                curs.execute(f"SELECT * FROM user WHERE chat_id = {message.chat.id};")
+                curs.execute(f"SELECT * FROM public.user WHERE chat_id = {message.chat.id};")
                 user = curs.fetchone()
                 msg.append(f'<b>ID:</b> {user[0]}\n')
                 msg.append(f'<b>Username:</b> @{user[1]}\n')
@@ -160,20 +161,20 @@ def answer_handler(message):
                 parse_mode='HTML'
             )
 
-# @server.route('/5347978233:AAHvtXwjvqX4vp2C4crq-sbjqnjDOzrnM48', methods=['POST'])
-# def redirect_message():
-#     json_string = request.get_data().decode('utf-8')
-#     update = types.Update.de_json(json_string)
-#     bot.process_new_updates([update])
-#     return '!', 200
+@server.route('/5719924088:AAEnS5XdU9DoKXxtbKxwzURAmaOMK7dsLg4', methods=['POST'])
+def redirect_message():
+    json_string = request.get_data().decode('utf-8')
+    update = types.Update.de_json(json_string)
+    bot.process_new_updates([update])
+    return '!', 200
 
-# @server.route('/')
-# def webhook():
-#     bot.remove_webhook()
-#     bot.set_webhook(url=URL)
-#     return '!', 200
+@server.route('/')
+def webhook():
+    bot.remove_webhook()
+    bot.set_webhook(url=URL)
+    return '!', 200
 
 
 if __name__ == '__main__':
-    # server.run(host='0.0.0.0', port=int(getenv('PORT', 5000)))
-    bot.infinity_polling()
+    server.run(host='0.0.0.0', port=int(getenv('PORT', 5000)))
+    # bot.infinity_polling()
