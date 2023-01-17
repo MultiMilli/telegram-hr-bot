@@ -6,11 +6,11 @@ from telebot import TeleBot, types, logger
 from flask import Flask, request
 from psycopg2 import *
 
-from models import User
+# from models import User
 # from config import API_TOKEN, APP_URL
 
 TOKEN = '5347978233:AAHvtXwjvqX4vp2C4crq-sbjqnjDOzrnM48'
-# URL = f'https://web-project3-v1.herokuapp.com/5719924088:AAHqL_qZq-ePYkEjRlKzaSmf9YB46gTrQ-0'
+URL = f'https://web-production-426d.up.railway.app/5719924088:AAHqL_qZq-ePYkEjRlKzaSmf9YB46gTrQ-0'
 bot = TeleBot(TOKEN)
 server = Flask(__name__)
 # bot = TeleBot(API_TOKEN)
