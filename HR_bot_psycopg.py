@@ -4,12 +4,13 @@ from logging import DEBUG
 
 from telebot import TeleBot, types, logger
 from flask import Flask, request
+from psycopg2 import *
 
 from models import User
 # from config import API_TOKEN, APP_URL
 
-TOKEN = '5719924088:AAHqL_qZq-ePYkEjRlKzaSmf9YB46gTrQ-0'
-URL = f'https://web-project3-v1.herokuapp.com/5719924088:AAHqL_qZq-ePYkEjRlKzaSmf9YB46gTrQ-0'
+TOKEN = '5347978233:AAHvtXwjvqX4vp2C4crq-sbjqnjDOzrnM48'
+# URL = f'https://web-project3-v1.herokuapp.com/5719924088:AAHqL_qZq-ePYkEjRlKzaSmf9YB46gTrQ-0'
 bot = TeleBot(TOKEN)
 server = Flask(__name__)
 # bot = TeleBot(API_TOKEN)
@@ -17,6 +18,9 @@ server = Flask(__name__)
 # server = Flask(__name__)
 # logger = logger
 # logger.setLevel(DEBUG) 
+conn = connect(database="railway", host="containers-us-west-112.railway.app", port='7853', user='postgres', password='7im3uQsWdPjwW9iucKzW')
+curs = conn.cursor()
+conn.autocommit = True
 
 Q_INDEX = 0
 ANSWERS_LIST = []
@@ -35,9 +39,15 @@ def send_welcome(message):
     button = types.InlineKeyboardButton('💸 Вперед 💸', callback_data='go')
     keyboard = types.InlineKeyboardMarkup()
     keyboard.add(button)
-
-    if not User.select().where(User.chat_id == message.chat.id):
-        User.create(chat_id=message.chat.id, username=message.from_user.username, first_name=message.from_user.first_name)
+    #11111
+    curs.execute(f"SELECT chat_id FROM public.user WHERE chat_id = {message.chat.id};")
+    user = curs.fetchone()
+    #22222
+    if not user:
+        #3333
+        curs.execute("INSERT INTO public.user (chat_id, username, first_name) VALUES (%s, %s, %s);", (message.chat.id, message.from_user.username, message.from_user.first_name))
+        # conn.commit()
+        # User.create(chat_id=message.chat.id, username=message.from_user.username, first_name=message.from_user.first_name)
         bot.send_message(
             message.chat.id, 
             f'Привіт <b>{message.chat.first_name}</b>👋, я помічник ТОПОВОЇ арбітражної команди <b>TrafficLab</b>!🔥 '
@@ -46,8 +56,13 @@ def send_welcome(message):
             reply_markup=keyboard, 
             parse_mode='HTML')
     else:
-        user = User.get(User.chat_id == message.chat.id)
-        if user.apply_time and (datetime.now() - user.apply_time).seconds < 30:
+        #44444
+        curs.execute(f"SELECT apply_time FROM public.user WHERE chat_id = {message.chat.id};")
+        atime = curs.fetchone()
+        # print(atime)
+        # user = User.get(User.chat_id == message.chat.id)
+        # if user.apply_time and (datetime.now() - user.apply_time).seconds < 30:
+        if atime[0] and (datetime.now() - atime[0]).seconds < 30:
             bot.send_message(
                 message.chat.id, 
                 f'❗️Вибачте, але повторна подача заявок можлива не раніше ніж за <b>1 тиждень</b>❗️', 
@@ -83,7 +98,10 @@ def answer_handler(message):
     global Q_INDEX
     global APPLICATION_DATETIME
 
-    user = User.get(User.chat_id == message.chat.id)
+    #55555
+    curs.execute(f"SELECT * FROM public.user WHERE chat_id = {message.chat.id};")
+    user = curs.fetchone()
+    # user = User.get(User.chat_id == message.chat.id)
 
     if Q_INDEX == 0: 
         bot.send_message(
@@ -106,13 +124,22 @@ def answer_handler(message):
                     f'Дякую за відповіді, на все добре!🙌'
                 )
                 APPLICATION_DATETIME = datetime.now()
-                user.apply_time = APPLICATION_DATETIME
-                user.save()
+                # 6666
+                curs.execute("UPDATE public.user SET apply_time = %(apply_time)s WHERE chat_id = %(chat_id)s;", {"chat_id": message.chat.id, "apply_time": APPLICATION_DATETIME})
+                # user.apply_time = APPLICATION_DATETIME
+                # user.save()
                 msg = []
-                msg.append(f'<b>ID:</b> {user.id}\n')
-                msg.append(f'<b>Username:</b> @{user.username}\n')
-                msg.append(f'<b>First Name:</b> {user.first_name}\n')
-                msg.append(f'<b>Application time:</b> {user.apply_time.strftime("%d.%m.%Y %H:%M:%S")}\n')
+                # msg.append(f'<b>ID:</b> {user.id}\n')
+                # msg.append(f'<b>Username:</b> @{user.username}\n')
+                # msg.append(f'<b>First Name:</b> {user.first_name}\n')
+                # msg.append(f'<b>Application time:</b> {user.apply_time.strftime("%d.%m.%Y %H:%M:%S")}\n')
+                #7777
+                curs.execute(f"SELECT * FROM public.user WHERE chat_id = {message.chat.id};")
+                user = curs.fetchone()
+                msg.append(f'<b>ID:</b> {user[0]}\n')
+                msg.append(f'<b>Username:</b> @{user[1]}\n')
+                msg.append(f'<b>First Name:</b> {user[2]}\n')
+                msg.append(f'<b>Application time:</b> {user[4].strftime("%d.%m.%Y %H:%M:%S")}\n')
                 for answer in ANSWERS_LIST:
                     msg.append(f'<b>{ANSWERS_LIST.index(answer) + 1}.</b> {answer}\n')
                 bot.send_message(
@@ -120,7 +147,7 @@ def answer_handler(message):
                     text=''.join(msg), 
                     parse_mode='HTML'
                 )
-        elif (datetime.now() - user.apply_time).seconds < 30:
+        elif user[4] and (datetime.now() - user[4]).seconds < 30:
             bot.send_message(
                 message.chat.id, 
                 f'❗️Вибачте, але повторна подача заявок можлива не раніше ніж за <b>1 тиждень</b>❗️',
