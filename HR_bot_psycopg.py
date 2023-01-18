@@ -41,12 +41,12 @@ def send_welcome(message):
     keyboard = types.InlineKeyboardMarkup()
     keyboard.add(button)
     #11111
-    curs.execute(f"SELECT chat_id FROM public.userss WHERE chat_id = {message.chat.id};")
+    curs.execute(f"SELECT chat_id FROM public.users WHERE chat_id = {message.chat.id};")
     user = curs.fetchone()
     #22222
     if not user:
         #3333
-        curs.execute("INSERT INTO public.userss (chat_id, username, first_name) VALUES (%s, %s, %s);", (message.chat.id, message.from_user.username, message.from_user.first_name))
+        curs.execute("INSERT INTO public.users (chat_id, username, first_name) VALUES (%s, %s, %s);", (message.chat.id, message.from_user.username, message.from_user.first_name))
         # conn.commit()
         # User.create(chat_id=message.chat.id, username=message.from_user.username, first_name=message.from_user.first_name)
         bot.send_message(
