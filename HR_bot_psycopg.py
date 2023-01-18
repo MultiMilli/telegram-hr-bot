@@ -10,7 +10,7 @@ from psycopg2 import *
 # from config import API_TOKEN, APP_URL
 
 TOKEN = '5719924088:AAEnS5XdU9DoKXxtbKxwzURAmaOMK7dsLg4'
-URL = f'https://web-production-4547.up.railway.app/5719924088:AAEnS5XdU9DoKXxtbKxwzURAmaOMK7dsLg4'
+URL = f'https://web-production-4a89.up.railway.app/5719924088:AAEnS5XdU9DoKXxtbKxwzURAmaOMK7dsLg4'
 bot = TeleBot(TOKEN)
 server = Flask(__name__)
 # bot = TeleBot(API_TOKEN)
@@ -19,7 +19,7 @@ server = Flask(__name__)
 # logger = logger
 # logger.setLevel(DEBUG) 
 # conn = connect(database="railway", host="containers-us-west-112.railway.app", port='7853', user='postgres', password='7im3uQsWdPjwW9iucKzW')
-conn = connect('postgresql://postgres:x54mwNEdaHOh2OHaPSdW@containers-us-west-132.railway.app:5802/railway', sslmode="require")
+conn = connect('postgresql://postgres:s29WcEqlqXw4a6zL9rXC@containers-us-west-98.railway.app:7177/railway', sslmode="require")
 curs = conn.cursor()
 conn.autocommit = True
 
