@@ -4,23 +4,25 @@ from logging import DEBUG
 
 from telebot import TeleBot, types, logger
 from flask import Flask, request
+from psycopg2 import *
 
 from models import User
-# from config import API_TOKEN, APP_URL
+from config import API_TOKEN, APP_URL, DB_URL, CHAT_ID
 
-TOKEN = '5719924088:AAHqL_qZq-ePYkEjRlKzaSmf9YB46gTrQ-0'
-URL = f'https://web-project3-v1.herokuapp.com/5719924088:AAHqL_qZq-ePYkEjRlKzaSmf9YB46gTrQ-0'
-bot = TeleBot(TOKEN)
+bot = TeleBot(API_TOKEN)
+
 server = Flask(__name__)
-# bot = TeleBot(API_TOKEN)
-# URL = APP_URL + API_TOKEN
-# server = Flask(__name__)
-# logger = logger
-# logger.setLevel(DEBUG) 
+logger = logger
+logger.setLevel(DEBUG) 
+
+conn = connect(DB_URL, sslmode="require")
+curs = conn.cursor()
+conn.autocommit = True
 
 Q_INDEX = 0
 ANSWERS_LIST = []
 APPLICATION_DATETIME = 0
+URL = APP_URL + API_TOKEN 
 
 with open('questions.txt', 'r') as file:
     questions_list = [i[:-1] for i in file.readlines()]
@@ -116,7 +118,7 @@ def answer_handler(message):
                 for answer in ANSWERS_LIST:
                     msg.append(f'<b>{ANSWERS_LIST.index(answer) + 1}.</b> {answer}\n')
                 bot.send_message(
-                    chat_id='-1001800698387', 
+                    chat_id=CHAT_ID, 
                     text=''.join(msg), 
                     parse_mode='HTML'
                 )
@@ -133,20 +135,19 @@ def answer_handler(message):
                 parse_mode='HTML'
             )
 
-# @server.route('/5719924088:AAHqL_qZq-ePYkEjRlKzaSmf9YB46gTrQ-0', methods=['POST'])
-# def redirect_message():
-#     json_string = request.get_data().decode('utf-8')
-#     update = types.Update.de_json(json_string)
-#     bot.process_new_updates([update])
-#     return '!', 200
+@server.route('/' + API_TOKEN, methods=['POST'])
+def redirect_message():
+    json_string = request.get_data().decode('utf-8')
+    update = types.Update.de_json(json_string)
+    bot.process_new_updates([update])
+    return 'OK', 200
 
-# @server.route('/')
-# def webhook():
-#     bot.remove_webhook()
-#     bot.set_webhook(url=URL)
-#     return '!', 200
+@server.route('/')
+def webhook():
+    bot.remove_webhook()
+    bot.set_webhook(url=URL)
+    return 'OK', 200
 
 
 if __name__ == '__main__':
-    # server.run(host='0.0.0.0', port=int(getenv('PORT', 5000)))
-    bot.infinity_polling()
+    server.run(host='0.0.0.0', port=int(getenv('PORT', 5000)))

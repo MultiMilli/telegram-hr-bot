@@ -75,8 +75,5 @@ GitHub.sublime-settings
 .history
 
 # Custom
-requirements_pip freeze.txt
 requirements_pipreqs.txt
 test.py
-applicants
-# HR_bot_psycopg.py
