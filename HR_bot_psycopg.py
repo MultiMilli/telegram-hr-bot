@@ -37,7 +37,7 @@ def send_welcome(message):
     keyboard = types.InlineKeyboardMarkup()
     keyboard.add(button)
     
-    curs.execute("SELECT chat_id FROM public.user WHERE chat_id = %s;", (message.chat.id))
+    curs.execute("SELECT chat_id FROM public.user WHERE chat_id = %s;", (message.chat.id,))
     user = curs.fetchone()
     if not user:
         curs.execute(
@@ -54,7 +54,7 @@ def send_welcome(message):
     else:
         curs.execute(
             "SELECT apply_time FROM public.user WHERE chat_id = %s;", 
-            (message.chat.id)
+            (message.chat.id,)
         )
         atime = curs.fetchone()[0]
         if atime and (datetime.now() - atime).seconds < 30:
@@ -93,7 +93,7 @@ def answer_handler(message):
     global Q_INDEX
     global APPLICATION_DATETIME
 
-    curs.execute("SELECT * FROM public.user WHERE chat_id = %s;", (message.chat.id))
+    curs.execute("SELECT * FROM public.user WHERE chat_id = %s;", (message.chat.id,))
     user = curs.fetchone()
 
     if Q_INDEX == 0: 
@@ -118,7 +118,7 @@ def answer_handler(message):
                 )
                 APPLICATION_DATETIME = datetime.now()
                 curs.execute("UPDATE public.user SET apply_time = %(apply_time)s WHERE chat_id = %(chat_id)s;", {"chat_id": message.chat.id, "apply_time": APPLICATION_DATETIME})
-                curs.execute("SELECT * FROM public.user WHERE chat_id = %s;", (message.chat.id))
+                curs.execute("SELECT * FROM public.user WHERE chat_id = %s;", (message.chat.id,))
                 user = curs.fetchone()
                 msg = []
                 msg.append(f'<b>ID:</b> {user[0]}\n')
