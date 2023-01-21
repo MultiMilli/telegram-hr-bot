@@ -22,7 +22,7 @@ conn.autocommit = True
 Q_INDEX = 0
 ANSWERS_LIST = []
 APPLICATION_DATETIME = 0
-URL = APP_URL + API_TOKEN 
+URL = APP_URL + '/' + API_TOKEN 
 
 with open('questions.txt', 'r') as file:
     questions_list = [i[:-1] for i in file.readlines()]
