@@ -121,9 +121,9 @@ def answer_handler(message):
                 curs.execute("SELECT * FROM public.user WHERE chat_id = %s;", (message.chat.id,))
                 user = curs.fetchone()
                 msg = []
-                msg.append(f'<b>ID:</b> {user[0]}\n')
-                msg.append(f'<b>Username:</b> @{user[1]}\n')
-                msg.append(f'<b>First Name:</b> {user[2]}\n')
+                msg.append(f'<b>ID:</b> {user[1]}\n')
+                msg.append(f'<b>Username:</b> @{user[2]}\n')
+                msg.append(f'<b>First Name:</b> {user[3]}\n')
                 msg.append(f'<b>Application time:</b> {user[4].strftime("%d.%m.%Y %H:%M:%S")}\n')
                 for answer in ANSWERS_LIST:
                     msg.append(f'<b>{ANSWERS_LIST.index(answer) + 1}.</b> {answer}\n')
